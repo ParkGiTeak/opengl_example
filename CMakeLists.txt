@@ -12,6 +12,10 @@ add_executable(${PROJECT_NAME}
     src/main.cpp
     src/common.cpp src/common.h
     src/shader.cpp src/common.h
+    src/program.cpp src/program.h
+    src/context.cpp src/context.h
+    src/buffer.cpp src/buffer.h
+    src/vertex_layout.cpp src/vertex_layout.h
     ) 
 
 include(Dependency.cmake)
@@ -23,9 +27,9 @@ target_link_libraries(${PROJECT_NAME} PUBLIC ${DEP_LIBS} "-framework CoreFoundat
 "-framework CoreVideo" "-framework IOKit" "-framework APPKit")
 	
 target_compile_definitions(${PROJECT_NAME} PUBLIC
-  WINDOW_NAME="${WINDOW_NAME}"
-  WINDOW_WIDTH=${WINDOW_WIDTH}
-  WINDOW_HEIGHT=${WINDOW_HEIGHT}
+    WINDOW_NAME="${WINDOW_NAME}"
+    WINDOW_WIDTH=${WINDOW_WIDTH}
+    WINDOW_HEIGHT=${WINDOW_HEIGHT}
   )
 
 # Dependency들이 먼저 build 될 수 있게 관계 설정
