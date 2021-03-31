@@ -24,8 +24,21 @@ void OnKeyEvent(GLFWwindow* window,
     }
 }
 
-int main(int argc, const char** argy) {
+int main(int argc, const char** argv) {
     SPDLOG_INFO("Start program");
+    SPDLOG_INFO("arg count: {}", argc);
+    for (int i = 0; i < argc; i++) {
+        SPDLOG_INFO("argv[{}]: {}", i, argv[i]);
+    }
+
+    float circleRadius =  0.75f;
+    int circleSegmentCount = 16;
+    if (argc >= 2)  {
+        circleRadius = std::stof(argv[1]);
+    }
+    if (argc >= 3)  {
+        circleSegmentCount = std::stoi(argv[2]);
+    }
 
         // glfw 라이브러리 초기화, 실패하면 에러 출력후 종료
     SPDLOG_INFO("Initialize glfw");
@@ -66,6 +79,8 @@ int main(int argc, const char** argy) {
         glfwTerminate();
         return -1;
     }
+
+    context->CreateCircle(circleRadius, circleSegmentCount);
 
     OnFramebufferSizeChange(window, WINDOW_WIDTH, WINDOW_HEIGHT);
     glfwSetFramebufferSizeCallback(window, OnFramebufferSizeChange);

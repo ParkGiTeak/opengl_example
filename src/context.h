@@ -11,6 +11,7 @@ CLASS_PTR(Context)
 class Context {
 public:
     static ContextUPtr Create();
+    void CreateCircle(float radius, int segment);
     void Render();    
 private:
     Context() {}
@@ -21,6 +22,7 @@ private:
     VertexLayoutUPtr m_vertexLayout;
     BufferUPtr m_vertexBuffer;
     BufferUPtr m_indexBuffer;
+    int m_indexCount {6};
 };
 
 #endif // __CONTEXT_H__

@@ -33,9 +33,9 @@ bool Context::Init() {
         GL_STATIC_DRAW, indices, sizeof(uint32_t) * 6);
    
     ShaderPtr vertShader = Shader::CreateFromFile(
-    "./shader/per_vertex_color.vs", GL_VERTEX_SHADER);
+    "./shader/simple.vs", GL_VERTEX_SHADER);
     ShaderPtr fragShader = Shader::CreateFromFile(
-    "./shader/per_vertex_color.fs", GL_FRAGMENT_SHADER);
+    "./shader/simple.fs", GL_FRAGMENT_SHADER);
     if (!vertShader || !fragShader)
         return false;
     SPDLOG_INFO("vertex shader id: {}", vertShader->Get());
@@ -55,8 +55,48 @@ void Context::Render() {
     glClear(GL_COLOR_BUFFER_BIT);
 
     m_program->Use();
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+    glDrawElements(GL_TRIANGLES, m_indexCount, GL_UNSIGNED_INT, 0);
 
-    /*m_program->Use();
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);*/
+}
+
+void Context::CreateCircle(float radius, int segment) {
+    std::vector<float> vertices;
+    std::vector<uint32_t> indices;
+
+    const float pi = 3.141592f;
+    vertices.push_back(0.0f);
+    vertices.push_back(0.0f);
+    vertices.push_back(0.0f);
+    for (int i = 0; i < segment; i++) {
+        float angle = (360.f / segment * i) * pi / 180.0f;
+        float x = cosf(angle) * radius;
+        float y = sinf(angle) * radius;
+        vertices.push_back(x);
+        vertices.push_back(y);
+        vertices.push_back(0.0f);
+    }
+
+    for (int i = 0; i < segment; i++){
+        indices.push_back(0);
+        indices.push_back(i + 1);
+        if (i == segment - 1)
+            indices.push_back(1);
+        else
+            indices.push_back(i + 2);
+    }
+
+    m_vertexLayout = VertexLayout::Create();
+    m_vertexBuffer = Buffer::CreateWithData(GL_ARRAY_BUFFER, 
+        GL_STATIC_DRAW, vertices.data(), sizeof(float) * vertices.size());
+
+    m_vertexLayout->SetAttrib(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 3, 0);
+
+
+    m_indexBuffer = Buffer::CreateWithData(GL_ELEMENT_ARRAY_BUFFER,
+        GL_STATIC_DRAW, indices.data(), sizeof(uint32_t) * indices.size());
+    m_indexCount = (int)indices.size();
+
+    auto loc = glGetUniformLocation(m_program->Get(), "color");
+    m_program->Use();
+    glUniform4f(loc, 1.0f, 1.0f, 1.0f, 1.0f);
 }
