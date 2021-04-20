@@ -158,7 +158,7 @@ bool Context::Init() {
     m_program->SetUniform("tex", 0);
     m_program->SetUniform("tex2", 1);
 
-    // x축으로 -55도 회전
+    // x축으로 -55도 회전한다
     auto model = glm::rotate(glm::mat4(1.0f), glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
     // 카메라는 원점으로부터 z축 방향으로 -3만큼 떨어짐
     auto view = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -3.0f));
