@@ -4,6 +4,11 @@
       },
       "files.associations": {
         "random": "cpp",
-        "memory": "cpp"
+        "memory": "cpp",
+        "__split_buffer": "cpp",
+        "deque": "cpp",
+        "list": "cpp",
+        "string": "cpp",
+        "vector": "cpp"
       }
 }
